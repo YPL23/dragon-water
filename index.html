@@ -93,17 +93,65 @@
       "單腳站立喝水",
       "喝水後拍手三次",
       "邊喝水邊說出水龍的名字",
-      "喝完水後做一個笑臉"
+      "喝完水後做一個笑臉",
+	  "喝水時高舉水杯說「我是水之勇者！」",
+	  "喝完水對自己比一個大大的讚!",
+	  "喝水前先做兩下跳躍",
+	  "喝一口水後原地轉圈三次",
+	  "假裝自己是喝水的貓貓",
+	  "用機器人語氣說出「我要喝水」再喝",
+	  "喝完水模仿小孩口氣說「好好喝～」",
+	  "喝水時做一個甜美的表情，並在喝水前說「喝個水水~」喝完水後說「好涼涼~」",
+	  "喝水時裝成正在演講的總統",
+	  "喝水前說出你今天的秘密口號",
+	  "想像這杯水是魔法藥水，喝完會變強",
+	  "喝水前對水說一句鼓勵自己的話",
+	  "喝水時配上自己創作的音效",
+	  "拍下你完成任務時的樣子",
+	  "喝水時錄一段給水龍的話",
+	  "一邊喝水一邊跳你喜歡的舞步",
+	  "喝水前做一個超級誇張的笑臉",
+	  "喝水前做一個鬼臉",
+	  "喝完水立刻裝哭 3 秒",
+	  "喝水時裝作驚訝「哇！好冰喔！」",
+	  "對水杯說「謝謝你陪我今天」",
+	  "喝水時做一個超自信的姿勢！",
+	  "喝水時唱一句你喜歡的歌",
+	  "喝水前模仿動物叫聲",
+	  "喝完水對自己說「今天我最棒」",
+	  "喝水時用英文說 “Drink water, stay strong!”",
+	  "喝水前用不同語言說「乾杯！」",
+	  "喝水前說出你看到的三個藍色物品",
+	  "喝水時閉眼數到 5 再睜開",
+	  "喝水後用 3 秒說出今天穿什麼顏色衣服",
+	  "喝水後用手比出你現在的心情",
+	  "喝水前轉頭看四周，說出一樣讓你開心的東西",
+	  "假裝你是水龍國的王子/公主來喝水",
+	  "將水杯想像成能量寶石，喝下它變成超人",
+	  "喝完水對空氣比出「召喚水龍」手勢",
+	  "把喝水動作演得像電影特寫鏡頭",
+	  "喝水前說出你最想去的地方名字",
+	  "喝水前找一個人擊掌",
+	  "喝水時問旁邊的人「你喝水了沒？」",
+	  "喝完水給身邊的人一個微笑",
+	  "喝水時讓朋友幫你倒水（合作任務）",
+	  "兩人比賽誰喝水姿勢最像動畫角色"
     ];
 
     let currentMission = "";
     let stampCount = 0;
 
-    function drawMission() {
-      const index = Math.floor(Math.random() * missions.length);
-      currentMission = missions[index];
-      document.getElementById("missionBox").innerText = "任務：" + currentMission;
-    }
+	function drawMission() {
+	  let newMission;
+	  do {
+		const index = Math.floor(Math.random() * missions.length);
+		newMission = missions[index];
+	  } while (newMission === currentMission); // 重複就重抽
+
+	  currentMission = newMission;
+	  document.getElementById("missionBox").innerText = "任務：" + currentMission;
+	}
+
 
     function completeMission() {
       if (currentMission === "") {
