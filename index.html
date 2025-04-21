@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>水龍召喚：喝水任務</title>
+  <style>
+    /* 強制橫向提示 */
+    @media screen and (orientation: portrait) {
+      body::before {
+        content: "請將手機橫放以進行任務！";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #fef9f2;
+        color: #388e3c;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        text-align: center;
+        padding: 20px;
+      }
+    }
+
+    body {
+      font-family: 'Microsoft JhengHei', sans-serif;
+      background: #fef9f2;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .panel {
+      text-align: center;
+      max-width: 45%;
+    }
+
+    h1 {
+      color: #388e3c;
+      font-size: 28px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 15px;
+      border: none;
+      background: #81c784;
+      color: white;
+      border-radius: 8px;
+    }
+
+    .stamp {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #ff7043;
+    }
+
+    #missionBox {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #444;
+      min-height: 60px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="panel">
+    <h1>水龍召喚</h1>
+    <p>點擊抽任務：</p>
+    <button onclick="drawMission()">抽任務</button>
+    <div id="missionBox">（尚未抽取任務）</div>
+  </div>
+
+  <div class="panel">
+    <h1>完成挑戰</h1>
+    <button onclick="completeMission()">完成任務</button>
+    <div class="stamp" id="stampCount">印章數量：0</div>
+  </div>
+
+  <script>
+    const missions = [
+      "喝三口水並模仿龍吼",
+      "單腳站立喝水",
+      "喝水後拍手三次",
+      "邊喝水邊說出水龍的名字",
+      "喝完水後做一個笑臉"
+    ];
+
+    let currentMission = "";
+    let stampCount = 0;
+
+    function drawMission() {
+      const index = Math.floor(Math.random() * missions.length);
+      currentMission = missions[index];
+      document.getElementById("missionBox").innerText = "任務：" + currentMission;
+    }
+
+    function completeMission() {
+      if (currentMission === "") {
+        alert("請先抽任務！");
+        return;
+      }
+      stampCount++;
+      alert("水龍吐出勇者印章！");
+      document.getElementById("stampCount").innerText = "印章數量：" + stampCount;
+      currentMission = "";
+      document.getElementById("missionBox").innerText = "（尚未抽取任務）";
+    }
+  </script>
+
+</body>
+</html>
