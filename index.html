@@ -5,26 +5,113 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>水龍召喚：喝水任務</title>
   <style>
-    body { font-family: 'Microsoft JhengHei', sans-serif; text-align: center; padding: 30px; background: #fef9f2; }
-    h1 { color: #388e3c; }
-    button { font-size: 20px; padding: 10px 20px; margin: 15px; border: none; background: #81c784; color: white; border-radius: 8px; }
-    .stamp { font-size: 24px; margin-top: 20px; color: #ff7043; }
-    #missionBox { margin-top: 30px; font-size: 22px; color: #444; }
-    #timer { font-size: 18px; color: red; }
+    body {
+      font-family: 'Microsoft JhengHei', sans-serif;
+      background: #fef9f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+    }
+
+    /* 強制橫向模式 */
+    @media (orientation: landscape) {
+      body {
+        flex-direction: row;  /* 橫向排列 */
+        justify-content: space-around; /* 分散顯示左右內容 */
+      }
+      .panel {
+        text-align: center;
+        max-width: 45%;
+      }
+      h1 {
+        font-size: 32px;
+      }
+      button {
+        font-size: 18px;
+        padding: 12px 24px;
+        margin: 20px 0;
+      }
+      .stamp {
+        font-size: 26px;
+      }
+      #timer {
+        font-size: 20px;
+        color: red;
+      }
+    }
+
+    /* 直式模式下，顯示提示 */
+    @media (orientation: portrait) {
+      body::before {
+        content: "請將手機橫放以進行任務！";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: #fef9f2;
+        color: #388e3c;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        text-align: center;
+        padding: 20px;
+      }
+    }
+
+    h1 {
+      color: #388e3c;
+      font-size: 28px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin: 15px;
+      border: none;
+      background: #81c784;
+      color: white;
+      border-radius: 8px;
+    }
+
+    .stamp {
+      font-size: 24px;
+      margin-top: 20px;
+      color: #ff7043;
+    }
+
+    #missionBox {
+      margin-top: 30px;
+      font-size: 22px;
+      color: #444;
+    }
+
+    #timer {
+      font-size: 18px;
+      color: red;
+    }
   </style>
 </head>
 <body>
 
-  <h1>水龍召喚</h1>
-  <p>點擊下方按鈕抽取今天的喝水任務：</p>
+  <div class="panel">
+    <h1>水龍召喚</h1>
+    <p>點擊下方按鈕抽取今天的喝水任務：</p>
+    <button onclick="drawMission()">抽任務</button>
+    <div id="missionBox">（尚未抽取任務）</div>
+  </div>
 
-  <button onclick="drawMission()">抽任務</button>
-  <div id="missionBox">（尚未抽取任務）</div>
-
-  <button onclick="completeMission()">完成任務</button>
-  <div class="stamp" id="stampCount">印章數量：0</div>
-
-  <div id="timer"></div>
+  <div class="panel">
+    <h1>完成挑戰</h1>
+    <button onclick="completeMission()">完成任務</button>
+    <div class="stamp" id="stampCount">印章數量：0</div>
+    <div id="timer"></div>
+  </div>
 
   <script>
     const missions = [
