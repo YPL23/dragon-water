@@ -5,87 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <title>水龍召喚：喝水任務</title>
   <style>
-    /* 強制橫向提示 */
-    @media screen and (orientation: portrait) {
-      body::before {
-        content: "請將手機橫放以進行任務！";
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: #fef9f2;
-        color: #388e3c;
-        font-size: 24px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        text-align: center;
-        padding: 20px;
-      }
-    }
-
-    body {
-      font-family: 'Microsoft JhengHei', sans-serif;
-      background: #fef9f2;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-around;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .panel {
-      text-align: center;
-      max-width: 45%;
-    }
-
-    h1 {
-      color: #388e3c;
-      font-size: 28px;
-    }
-
-    button {
-      font-size: 20px;
-      padding: 10px 20px;
-      margin: 15px;
-      border: none;
-      background: #81c784;
-      color: white;
-      border-radius: 8px;
-    }
-
-    .stamp {
-      font-size: 24px;
-      margin-top: 20px;
-      color: #ff7043;
-    }
-
-    #missionBox {
-      margin-top: 20px;
-      font-size: 22px;
-      color: #444;
-      min-height: 60px;
-    }
+    body { font-family: 'Microsoft JhengHei', sans-serif; text-align: center; padding: 30px; background: #fef9f2; }
+    h1 { color: #388e3c; }
+    button { font-size: 20px; padding: 10px 20px; margin: 15px; border: none; background: #81c784; color: white; border-radius: 8px; }
+    .stamp { font-size: 24px; margin-top: 20px; color: #ff7043; }
+    #missionBox { margin-top: 30px; font-size: 22px; color: #444; }
+    #timer { font-size: 18px; color: red; }
   </style>
 </head>
 <body>
 
-  <div class="panel">
-    <h1>水龍召喚</h1>
-    <p>點擊抽任務：</p>
-    <button onclick="drawMission()">抽任務</button>
-    <div id="missionBox">（尚未抽取任務）</div>
-  </div>
+  <h1>水龍召喚</h1>
+  <p>點擊下方按鈕抽取今天的喝水任務：</p>
 
-  <div class="panel">
-    <h1>完成挑戰</h1>
-    <button onclick="completeMission()">完成任務</button>
-    <div class="stamp" id="stampCount">印章數量：0</div>
-  </div>
+  <button onclick="drawMission()">抽任務</button>
+  <div id="missionBox">（尚未抽取任務）</div>
+
+  <button onclick="completeMission()">完成任務</button>
+  <div class="stamp" id="stampCount">印章數量：0</div>
+
+  <div id="timer"></div>
 
   <script>
     const missions = [
@@ -140,18 +79,36 @@
 
     let currentMission = "";
     let stampCount = 0;
+    let timerInterval;
+    let timeRemaining = 30; // 設定時間限制為30秒
 
-	function drawMission() {
-	  let newMission;
-	  do {
-		const index = Math.floor(Math.random() * missions.length);
-		newMission = missions[index];
-	  } while (newMission === currentMission); // 重複就重抽
+    function shuffleMissions() {
+      let shuffledMissions = missions.slice().sort(() => Math.random() - 0.5);
+      return shuffledMissions;
+    }
 
-	  currentMission = newMission;
-	  document.getElementById("missionBox").innerText = "任務：" + currentMission;
-	}
+    function drawMission() {
+      const shuffledMissions = shuffleMissions();
+      const newMission = shuffledMissions[Math.floor(Math.random() * shuffledMissions.length)];
+      currentMission = newMission;
+      document.getElementById("missionBox").innerText = "任務：" + currentMission;
+      startTimer();
+    }
 
+    function startTimer() {
+      timeRemaining = 30; // 重置時間為 30 秒
+      document.getElementById("timer").innerText = `剩餘時間: ${timeRemaining} 秒`;
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeRemaining--;
+        document.getElementById("timer").innerText = `剩餘時間: ${timeRemaining} 秒`;
+        if (timeRemaining <= 0) {
+          clearInterval(timerInterval);
+          alert("時間到！你未能完成任務！");
+          resetMission();
+        }
+      }, 1000);
+    }
 
     function completeMission() {
       if (currentMission === "") {
@@ -160,9 +117,23 @@
       }
       stampCount++;
       alert("水龍吐出勇者印章！");
+
+      // 播放水龍音效
+      const audio = new Audio('https://www.soundjay.com/button/beep-07.wav'); // 播放音效（可替換為更合適的音效）
+      audio.play();
+
+      // 顯示水龍動畫（模擬動畫，這裡可加入圖片或動畫）
+      document.body.style.backgroundColor = "#81c784";  // 背景顏色變化，模擬水龍動畫效果
+
       document.getElementById("stampCount").innerText = "印章數量：" + stampCount;
+      resetMission();
+    }
+
+    function resetMission() {
       currentMission = "";
       document.getElementById("missionBox").innerText = "（尚未抽取任務）";
+      document.getElementById("timer").innerText = "";
+      document.body.style.backgroundColor = "#fef9f2";  // 重設背景顏色
     }
   </script>
 
